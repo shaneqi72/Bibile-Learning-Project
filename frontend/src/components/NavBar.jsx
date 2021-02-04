@@ -97,7 +97,7 @@ const NavBar = () => {
                         <MenuIcon />
                     </IconButton>
                 </Hidden>
-                <Typography variant="p" className={classes.title}>
+                <Typography className={classes.title}>
                     <a href="/" className={classes.webName}>
                         圣经金句网
                     </a>

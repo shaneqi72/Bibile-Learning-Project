@@ -4,8 +4,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const port = 5500;
 const mongoose = require('mongoose');
+const authRouter = require('./routes/auth');
+const goldverseRouter = require('./routes/goldverse');
+
+const port = 5500;
 
 mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
     console.log('connected to DB!'),
@@ -14,11 +17,9 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
 app.use(bodyParser.json());
 app.use(cors());
 
-const loginRouter = require('./routes/login');
-app.use('/login', loginRouter);
+app.use('/auth', authRouter);
 
-const goldVerseRouter = require('./routes/goldverse');
-app.use('/goldVerse', goldVerseRouter);
+app.use('/goldverse', goldverseRouter);
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);

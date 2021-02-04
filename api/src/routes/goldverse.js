@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const goldVerse = require('../../data/GoldVerse');
 
-const goldVerse = require('../data/GoldVerse');
+const router = express.Router();
 
 //Getting All
 router.get('/', (req, res) => {
