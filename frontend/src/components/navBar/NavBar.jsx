@@ -20,8 +20,9 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useDispatch } from 'react-redux';
 
 import { LoginDialog } from './LoginDialog';
+import { RegisterDialog } from './RegisterDialog';
 
-import { toggleNavDrawer } from '../store/nav/actions';
+import { toggleNavDrawer } from '../../store/nav/actions';
 
 const StyledMenu = withStyles({
     paper: {
@@ -70,15 +71,26 @@ const NavBar = () => {
 
     //Login Button
 
-    const [open, setOpen] = useState(false);
+    const [openSignIn, setOpenSignIn] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(!open);
+    const handleSignInOpen = () => {
+        setOpenSignIn(!openSignIn);
         handleMenuClose();
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleSignInClose = () => {
+        setOpenSignIn(false);
+    };
+    //Sign Up
+    const [openSignUp, setOpenSignUp] = useState(false);
+
+    const handleSignUpOpen = () => {
+        setOpenSignUp(!openSignUp);
+        handleMenuClose();
+    };
+
+    const handleSignUpClose = () => {
+        setOpenSignUp(false);
     };
 
     const dispatch = useDispatch();
@@ -146,7 +158,11 @@ const NavBar = () => {
                             <ListItemText primary="金句测试" />
                         </StyledMenuItem>
                     </StyledMenu>
-                    <Button variant="outlined" style={{ color: 'white' }} onClick={handleClickOpen}>
+                    <Button
+                        variant="outlined"
+                        style={{ color: 'white' }}
+                        onClick={handleSignInOpen}
+                    >
                         Login
                     </Button>
                 </Hidden>
@@ -169,11 +185,17 @@ const NavBar = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <StyledMenuItem onClick={handleClickOpen}>
+                        <StyledMenuItem onClick={handleSignInOpen}>
                             <ListItemIcon>
                                 <VpnKeyIcon fontSize="small" />
                             </ListItemIcon>
                             <ListItemText primary="用户登录" />
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleSignUpOpen}>
+                            <ListItemIcon>
+                                <VpnKeyIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText primary="用户注册" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleMenuClose}>
                             <ListItemIcon>
@@ -202,7 +224,8 @@ const NavBar = () => {
                     </StyledMenu>
                 </Hidden>
             </Toolbar>
-            <LoginDialog open={open} handleClose={handleClose} />
+            <LoginDialog open={openSignIn} handleClose={handleSignInClose} />
+            <RegisterDialog open={openSignUp} handleClose={handleSignUpClose} />
         </AppBar>
     );
 };

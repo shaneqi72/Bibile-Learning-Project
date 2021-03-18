@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box } from '../components';
+import { Box } from '../components/box/Box';
 
 const HomePage = () => {
     const classes = useStyles();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '../components/Box';
+import { Box } from '../components/box/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from '@material-ui/core';
 import LearningMobilePage from './LearningMobilePage';
