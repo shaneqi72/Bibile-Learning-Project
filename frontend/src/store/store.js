@@ -1,7 +1,9 @@
 import { combineReducers, createStore } from 'redux';
+import authReducer from './auth/reducer';
 import navReducer from './nav/reducer';
 
 const allReducer = combineReducers({
+    auth: authReducer,
     nav: navReducer,
 });
 

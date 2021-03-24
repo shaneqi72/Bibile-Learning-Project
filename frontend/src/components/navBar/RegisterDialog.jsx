@@ -1,41 +1,38 @@
-import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormikField from './FormikField';
+
+import * as yup from 'yup';
+import { Formik, Form } from 'formik';
 
 const RegisterDialog = ({ open, handleClose }) => {
-    const [email, setEmail] = useState(null);
-    const [firstName, setFirstName] = useState(null);
-    const [lastName, setLastName] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [username, setUserName] = useState(null);
+    const initialValues = {
+        fistname: '',
+        lastname: '',
+        username: '',
+        email: '',
+        password: '',
+    };
 
-    const onEmailChange = (e) => {
-        setEmail(e.target.value);
-    };
-    const onFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-    const onLastNameChange = (e) => {
-        setLastName(e.target.value);
-    };
-    const onPasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
-    const onUserNameChange = (e) => {
-        setUserName(e.target.value);
-    };
+    const validationSchema = yup.object().shape({
+        firstname: yup.string().required('Required!'),
+        lastname: yup.string().required('Required!'),
+        username: yup.string().required('Required!'),
+        email: yup.string().email().required('Required!'),
+        password: yup.string().required('Required!'),
+    });
 
     const axios = require('axios');
 
-    const onSubmitSignUp = (e) => {
-        e.preventDefault();
+    const onSubmitSignUp = (values) => {
+        const { firstname, lastname, username, email, password } = values;
+
         axios
             .post('http://localhost:5500/auth/signup', {
-                firstName: firstName,
-                lastName: lastName,
+                firstName: firstname,
+                lastName: lastname,
                 username: username,
                 email: email,
                 password: password,
@@ -56,74 +53,30 @@ const RegisterDialog = ({ open, handleClose }) => {
         >
             <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
             <DialogContent>
-                <form
-                    autoComplete="off"
-                    // action="http://localhost:5500/auth/signup"
-                    // method="POST"
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={onSubmitSignUp}
                 >
-                    <TextField
-                        name="firstName"
-                        value={firstName}
-                        autoFocus
-                        margin="dense"
-                        id="first-name"
-                        label="First Name"
-                        type="text"
-                        fullWidth
-                        onChange={onFirstNameChange}
-                    />
-                    <TextField
-                        name="lastName"
-                        value={lastName}
-                        autoFocus
-                        margin="dense"
-                        id="last-name"
-                        label="Last Name"
-                        type="text"
-                        fullWidth
-                        onChange={onLastNameChange}
-                    />
-                    <TextField
-                        name="userName"
-                        value={username}
-                        autoFocus
-                        margin="dense"
-                        id="user-name"
-                        label="User Name"
-                        type="text"
-                        fullWidth
-                        onChange={onUserNameChange}
-                    />
-                    <TextField
-                        name="email"
-                        value={email}
-                        autoFocus
-                        margin="dense"
-                        id="email"
-                        label="Email"
-                        type="email"
-                        fullWidth
-                        onChange={onEmailChange}
-                    />
-                    <TextField
-                        name="password"
-                        value={password}
-                        autoFocus
-                        margin="dense"
-                        id="password"
-                        label="Create Password"
-                        type="password"
-                        fullWidth
-                        onChange={onPasswordChange}
-                    />
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button type="submit" color="primary">
-                        Sign Up
-                    </Button>
-                </form>
+                    <Form>
+                        <FormikField name="firstname" id="firstname" label="First Name" />
+                        <FormikField name="lastname" id="lastname" label="Last Name" />
+                        <FormikField name="username" id="username" label="User Name" />
+                        <FormikField type="email" name="email" id="email" label="Email" />
+                        <FormikField
+                            type="password"
+                            name="password"
+                            id="password"
+                            label="Create Password"
+                        />
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit" color="primary">
+                            Sign Up
+                        </Button>
+                    </Form>
+                </Formik>
             </DialogContent>
         </Dialog>
     );
