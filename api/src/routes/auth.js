@@ -40,6 +40,11 @@ const jwt = require('jsonwebtoken');
 
 router.post('/auth/signup', (req, res) => {
     const { firstName, lastName, email, username } = req.body;
+    const user = {
+        userName: username,
+        email: email,
+    };
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
     bcrypt
         .hash(req.body.password, 10)
         .then((hashedPassword) => {
@@ -51,7 +56,7 @@ router.post('/auth/signup', (req, res) => {
                 email: email,
             })
                 .then((newUser) => {
-                    res.status(201).send(newUser.username);
+                    res.status(201).send({ token: accessToken });
                 })
                 .catch((err) => res.status(400).send(err));
         })
@@ -81,7 +86,7 @@ router.post('/auth/signin', async (req, res) => {
 
             const accessToken = jwt.sign(loginUser, process.env.ACCESS_TOKEN_SECRET);
 
-            res.json({
+            res.send({
                 token: accessToken,
             });
         } else {
@@ -118,7 +123,6 @@ router.post('/auth/api/posts', verifyToken, (req, res) => {
             res.json({
                 message: 'Post created',
                 authData,
-                s,
             });
         }
     });
