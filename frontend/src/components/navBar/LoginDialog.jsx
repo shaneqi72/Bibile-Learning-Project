@@ -7,6 +7,8 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { Formik, Form } from 'formik';
 import FormikField from './FormikField';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfo } from '../../store/auth/actions';
 
 const LoginDialog = ({ open, handleClose }) => {
     const initialValues = {
@@ -19,7 +21,9 @@ const LoginDialog = ({ open, handleClose }) => {
         password: yup.string().required('Required'),
     });
 
-    const onSubmit = (values) => {
+    const dispatch = useDispatch();
+
+    const onSubmit = (values, onSubmitProps) => {
         axios
             .post(
                 'http://localhost:5500/auth/signin',
@@ -27,17 +31,22 @@ const LoginDialog = ({ open, handleClose }) => {
                     username: values.username,
                     password: values.password,
                 },
-                {
-                    headers: {
-                        authorization: 'Bearer {token}',
-                    },
-                },
+                // {
+                //     headers: {
+                //         authorization: 'Bearer {token}',
+                //     },
+                // },
             )
-            .then((res) => console.log(res))
+            .then((res) => {
+                dispatch(setUserInfo(res.data.token, true));
+            })
             .catch((err) => console.log(err));
-
+        onSubmitProps.setSubmitting(false);
         handleClose();
     };
+
+    const isLoggedIn = useSelector((state) => state.auth);
+    console.log(isLoggedIn);
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
@@ -47,7 +56,7 @@ const LoginDialog = ({ open, handleClose }) => {
                     validationSchema={validationSchema}
                     onSubmit={onSubmit}
                 >
-                    {({ values, dirty, isValid }) => (
+                    {(formik) => (
                         <Form>
                             <FormikField name="username" id="username" label="Username" />
                             <FormikField
@@ -60,7 +69,11 @@ const LoginDialog = ({ open, handleClose }) => {
                                 <Button onClick={handleClose} color="primary">
                                     Cancel
                                 </Button>
-                                <Button type="submit" color="primary">
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    disabled={!formik.isValid || formik.isSubmitting}
+                                >
                                     Sign In
                                 </Button>
                             </DialogActions>

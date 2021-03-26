@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 import TextField from '@material-ui/core/TextField';
+import TextError from './TextError';
 const FormikField = ({ name, label, id, type = 'text' }) => {
     return (
         <>
@@ -16,7 +17,7 @@ const FormikField = ({ name, label, id, type = 'text' }) => {
                 as={TextField}
                 margin="dense"
             />
-            <ErrorMessage name={name} />
+            <ErrorMessage name={name} component={TextError} />
         </>
     );
 };
