@@ -20,7 +20,7 @@ const authenticateToken = (req, res, next) => {
 };
 
 //Getting All
-router.get('/', authenticateToken, (req, res) => {
+router.post('/', authenticateToken, (req, res) => {
     jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) {
             res.sendStatus(403);

@@ -9,34 +9,7 @@ const sequelize = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Signup
-// router.post('/signup', async (req, res) => {
-//     try {
-//         // const salt = await bcrypt.genSalt();
-//         // const hashedPassword = await bcrypt.hash(req.body.password, salt);
-//         const { firstName, lastName, email, username } = req.body;
-//         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-//         User.create({
-//             firstName: firstName,
-//             lastName: lastName,
-//             username: username,
-//             password: hashedPassword,
-//             email: email,
-//         });
-//         // const newUser = await User.create({
-//         //     firstName: firstName,
-//         //     lastName: lastName,
-//         //     username: username,
-//         //     password: hashedPassword,
-//         //     email: email,
-//         // });
-
-//         res.status(201).send();
-//     } catch {
-//         res.status(500).send();
-//     }
-// });
+let refreshToken = [];
 
 router.post('/auth/signup', (req, res) => {
     const { firstName, lastName, email, username } = req.body;
@@ -85,9 +58,16 @@ router.post('/auth/signin', async (req, res) => {
             };
 
             const accessToken = jwt.sign(loginUser, process.env.ACCESS_TOKEN_SECRET);
+            const refreshToken = jwt.sign(loginUser, process.env.REFRESH_TOKEN_SECRET, {
+                expiresIn: '7d',
+            });
+            // refreshToken.push(refreshToken);
 
-            res.send({
-                token: accessToken,
+            console.log(accessToken);
+
+            res.json({
+                accessToken: accessToken,
+                refreshToken: refreshToken,
             });
         } else {
             res.json({
@@ -104,13 +84,13 @@ router.post('/auth/signin', async (req, res) => {
 const verifyToken = (req, res, next) => {
     //Get auth header value
     const bearerHeader = req.headers['authorization'];
-    const token = bearerHeader.split(' ')[1];
+    const accessToken = bearerHeader.split(' ')[1];
 
     if (bearerHeader == null) {
         res.sendStatus(403);
     }
 
-    req.token = token;
+    req.token = accessToken;
 
     next();
 };
@@ -128,4 +108,55 @@ router.post('/auth/api/posts', verifyToken, (req, res) => {
     });
 });
 
+router.post('/auth/api/renewAccessToken', (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) {
+        return res.status(403).json({ message: 'User not authenticated' });
+    }
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        console.log(user);
+        if (err) {
+            refreshToken.sendStatus(403).json({ message: 'User not authenticated' });
+        } else {
+            const authUser = {
+                userName: user.username,
+                password: user.password,
+            };
+            const accessToken = jwt.sign(authUser, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '20s',
+            });
+            return res.status(201).json({ accessToken });
+        }
+    });
+});
+
 module.exports = router;
+
+// Signup
+// router.post('/signup', async (req, res) => {
+//     try {
+//         // const salt = await bcrypt.genSalt();
+//         // const hashedPassword = await bcrypt.hash(req.body.password, salt);
+//         const { firstName, lastName, email, username } = req.body;
+//         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+//         User.create({
+//             firstName: firstName,
+//             lastName: lastName,
+//             username: username,
+//             password: hashedPassword,
+//             email: email,
+//         });
+//         // const newUser = await User.create({
+//         //     firstName: firstName,
+//         //     lastName: lastName,
+//         //     username: username,
+//         //     password: hashedPassword,
+//         //     email: email,
+//         // });
+
+//         res.status(201).send();
+//     } catch {
+//         res.status(500).send();
+//     }
+// });
