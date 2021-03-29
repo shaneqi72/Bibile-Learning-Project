@@ -42,7 +42,7 @@ const RegisterDialog = ({ open, handleClose }) => {
                 password: password,
             })
             .then((res) => {
-                dispatch(setUserInfo(res.data.token, true));
+                dispatch(setUserInfo(res.data.accessToken, true));
             })
             .catch((err) => console.log(err));
 
@@ -69,11 +69,35 @@ const RegisterDialog = ({ open, handleClose }) => {
                     {(formik) => {
                         return (
                             <Form>
-                                <FormikField name="firstname" id="firstname" label="First Name" />
-                                <FormikField name="lastname" id="lastname" label="Last Name" />
-                                <FormikField name="username" id="username" label="User Name" />
-                                <FormikField type="email" name="email" id="email" label="Email" />
                                 <FormikField
+                                    required
+                                    autoFocus
+                                    name="firstname"
+                                    id="firstname"
+                                    label="First Name"
+                                    error={formik.touched.firstname && formik.errors.firstname}
+                                />
+                                <FormikField
+                                    required
+                                    name="lastname"
+                                    id="lastname"
+                                    label="Last Name"
+                                />
+                                <FormikField
+                                    required
+                                    name="username"
+                                    id="username"
+                                    label="User Name"
+                                />
+                                <FormikField
+                                    required
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    label="Email"
+                                />
+                                <FormikField
+                                    required
                                     type="password"
                                     name="password"
                                     id="password"

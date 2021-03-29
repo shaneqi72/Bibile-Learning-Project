@@ -2,7 +2,6 @@ import { SET_USER_INFO } from './types';
 
 const INITIAL_STATE = {
     token: null,
-    isLoggedIn: false,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -12,7 +11,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 token: action.payload.token,
-                isLoggedIn: action.payload.isLoggedIn,
             };
         default:
             return state;

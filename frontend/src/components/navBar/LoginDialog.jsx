@@ -9,6 +9,7 @@ import { Formik, Form } from 'formik';
 import FormikField from './FormikField';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from '../../store/auth/actions';
+import { setWithExpiry } from './LocalStorage';
 
 const LoginDialog = ({ open, handleClose }) => {
     const initialValues = {
@@ -38,7 +39,8 @@ const LoginDialog = ({ open, handleClose }) => {
                 // },
             )
             .then((res) => {
-                dispatch(setUserInfo(res.data.token, true));
+                dispatch(setUserInfo(res.data.accessToken));
+                setWithExpiry('token', res.data.accessToken, 90000);
             })
             .catch((err) => console.log(err));
         onSubmitProps.setSubmitting(false);

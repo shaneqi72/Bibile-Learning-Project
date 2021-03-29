@@ -1,23 +1,22 @@
 import React from 'react';
-import { Field, ErrorMessage } from 'formik';
+import { Field } from 'formik';
 import TextField from '@material-ui/core/TextField';
-import TextError from './TextError';
-const FormikField = ({ name, label, id, type = 'text' }) => {
+
+const FormikField = (props) => {
+    const { type = 'text', error, ...rest } = props;
+
     return (
         <>
             <Field
                 autoComplete="off"
-                autoFocus
-                required
-                name={name}
                 type={type}
-                id={id}
-                label={label}
                 fullWidth
                 as={TextField}
                 margin="dense"
+                helperText={error}
+                error={Boolean(error)}
+                {...rest}
             />
-            <ErrorMessage name={name} component={TextError} />
         </>
     );
 };

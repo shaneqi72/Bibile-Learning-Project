@@ -17,11 +17,11 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfo } from '../../store/auth/actions';
 import { LoginDialog } from './LoginDialog';
 import { RegisterDialog } from './RegisterDialog';
-
+import { getWithExpiry } from './LocalStorage';
 import { toggleNavDrawer } from '../../store/nav/actions';
 
 const StyledMenu = withStyles({
@@ -92,7 +92,13 @@ const NavBar = () => {
     const handleSignUpClose = () => {
         setOpenSignUp(false);
     };
+    const handleLogoutButton = () => {
+        dispatch(setUserInfo(null));
+        localStorage.removeItem('token');
+    };
 
+    const accessToken = useSelector((state) => state.auth);
+    const localStorageToken = getWithExpiry('token');
     const dispatch = useDispatch();
 
     return (
@@ -158,13 +164,24 @@ const NavBar = () => {
                             <ListItemText primary="金句测试" />
                         </StyledMenuItem>
                     </StyledMenu>
-                    <Button
-                        variant="outlined"
-                        style={{ color: 'white' }}
-                        onClick={handleSignInOpen}
-                    >
-                        Login
-                    </Button>
+
+                    {accessToken.token || localStorageToken ? (
+                        <Button
+                            variant="outlined"
+                            style={{ color: 'white' }}
+                            onClick={handleLogoutButton}
+                        >
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="outlined"
+                            style={{ color: 'white' }}
+                            onClick={handleSignInOpen}
+                        >
+                            Login
+                        </Button>
+                    )}
                 </Hidden>
 
                 <Hidden smUp>
@@ -177,6 +194,17 @@ const NavBar = () => {
                     >
                         更多内容
                     </Button>
+                    {accessToken.token || localStorageToken ? (
+                        <Button
+                            aria-controls="customized-menu"
+                            aria-haspopup="true"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => console.log('Accessed to personal detail page')}
+                        >
+                            个人信息
+                        </Button>
+                    ) : null}
 
                     <StyledMenu
                         id="customized-menu"
@@ -185,18 +213,30 @@ const NavBar = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                     >
-                        <StyledMenuItem onClick={handleSignInOpen}>
-                            <ListItemIcon>
-                                <VpnKeyIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="用户登录" />
-                        </StyledMenuItem>
-                        <StyledMenuItem onClick={handleSignUpOpen}>
-                            <ListItemIcon>
-                                <VpnKeyIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="用户注册" />
-                        </StyledMenuItem>
+                        {accessToken.token || localStorageToken ? (
+                            <StyledMenuItem onClick={handleLogoutButton}>
+                                <ListItemIcon>
+                                    <VpnKeyIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="用户退出" />
+                            </StyledMenuItem>
+                        ) : (
+                            <StyledMenuItem onClick={handleSignInOpen}>
+                                <ListItemIcon>
+                                    <VpnKeyIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="用户登录" />
+                            </StyledMenuItem>
+                        )}
+                        {accessToken.token || localStorageToken ? null : (
+                            <StyledMenuItem onClick={handleSignUpOpen}>
+                                <ListItemIcon>
+                                    <VpnKeyIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="用户注册" />
+                            </StyledMenuItem>
+                        )}
+
                         <StyledMenuItem onClick={handleMenuClose}>
                             <ListItemIcon>
                                 <SendIcon fontSize="small" />

@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-
+import { getWithExpiry } from '../navBar/LocalStorage';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleNavDrawer } from '../../store/nav/actions';
 
@@ -21,11 +21,19 @@ const DRAWER_WIDTH = 180;
 const NavDrawer = () => {
     const history = useHistory();
     const classes = useStyles();
-
+    const localStorageToken = getWithExpiry('token');
+    const accessToken = useSelector((state) => state.auth);
     const drawerOpen = useSelector((state) => state.nav.drawerOpen);
     const dispatch = useDispatch();
 
-    const drawerItems = [
+    const loggedInDrawer = [
+        {
+            text: '个人信息',
+            icon: <InboxIcon />,
+            onClick: () => {
+                dispatch(toggleNavDrawer());
+            },
+        },
         {
             text: '记忆金句',
             icon: <InboxIcon />,
@@ -48,13 +56,38 @@ const NavDrawer = () => {
                 dispatch(toggleNavDrawer());
             },
         },
+
         {
-            text: '个人信息',
-            icon: <InboxIcon />,
+            text: '使用说明',
+            icon: <MailIcon />,
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
         },
+        {
+            text: '常见问题',
+            icon: <MailIcon />,
+            onClick: () => {
+                dispatch(toggleNavDrawer());
+            },
+        },
+        {
+            text: '记忆妙法',
+            icon: <MailIcon />,
+            onClick: () => {
+                dispatch(toggleNavDrawer());
+            },
+        },
+        {
+            text: '告诉朋友',
+            icon: <MailIcon />,
+            onClick: () => {
+                dispatch(toggleNavDrawer());
+            },
+        },
+    ];
+
+    const drawerItems = [
         {
             text: '使用说明',
             icon: <MailIcon />,
@@ -99,17 +132,31 @@ const NavDrawer = () => {
                     open
                 >
                     <Toolbar />
-                    <List>
-                        {drawerItems.map((item, index) => {
-                            const { text, icon, onClick } = item;
-                            return (
-                                <ListItem button key={text} onClick={onClick}>
-                                    {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            );
-                        })}
-                    </List>
+                    {accessToken.token || localStorageToken ? (
+                        <List>
+                            {loggedInDrawer.map((item, index) => {
+                                const { text, icon, onClick } = item;
+                                return (
+                                    <ListItem button key={index} onClick={onClick}>
+                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    ) : (
+                        <List>
+                            {drawerItems.map((item, index) => {
+                                const { text, icon, onClick } = item;
+                                return (
+                                    <ListItem button key={index} onClick={onClick}>
+                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    )}
                 </Drawer>
             </Hidden>
 
