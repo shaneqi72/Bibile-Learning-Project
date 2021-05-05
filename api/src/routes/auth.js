@@ -29,7 +29,11 @@ router.post('/auth/signup', (req, res) => {
                 email: email,
             })
                 .then((newUser) => {
-                    res.status(201).send({ token: accessToken });
+                    res.status(201).json({
+                        accessToken: accessToken,
+                        id: newUser.id,
+                        user: newUser,
+                    });
                 })
                 .catch((err) => res.status(400).send(err));
         })
@@ -63,10 +67,10 @@ router.post('/auth/signin', async (req, res) => {
             });
             // refreshToken.push(refreshToken);
 
-            console.log(accessToken);
-
             res.json({
                 accessToken: accessToken,
+                id: user.id,
+                user: user,
                 refreshToken: refreshToken,
             });
         } else {
@@ -95,14 +99,16 @@ const verifyToken = (req, res, next) => {
     next();
 };
 
-router.post('/auth/api/posts', verifyToken, (req, res) => {
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, authData) => {
+router.get('/auth/api/user-profile', verifyToken, (req, res) => {
+    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, async (err, authData) => {
+        console.log(authData.userName);
+        const user = await User.findOne({ where: { username: authData.userName } });
+        console.log(user);
         if (err) {
             res.sendStatus(403);
         } else {
             res.json({
-                message: 'Post created',
-                authData,
+                user,
             });
         }
     });

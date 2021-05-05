@@ -42,7 +42,7 @@ const RegisterDialog = ({ open, handleClose }) => {
                 password: password,
             })
             .then((res) => {
-                dispatch(setUserInfo(res.data.accessToken, true));
+                dispatch(setUserInfo(res.data.accessToken, res.data.id, res.data.user));
             })
             .catch((err) => console.log(err));
 

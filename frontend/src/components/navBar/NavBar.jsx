@@ -23,6 +23,7 @@ import { LoginDialog } from './LoginDialog';
 import { RegisterDialog } from './RegisterDialog';
 import { getWithExpiry } from './LocalStorage';
 import { toggleNavDrawer } from '../../store/nav/actions';
+import { useHistory } from 'react-router-dom';
 
 const StyledMenu = withStyles({
     paper: {
@@ -56,6 +57,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 const NavBar = () => {
+    const history = useHistory();
     //Menu buttons in NavBar
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -95,6 +97,12 @@ const NavBar = () => {
     const handleLogoutButton = () => {
         dispatch(setUserInfo(null));
         localStorage.removeItem('token');
+        history.push('/');
+    };
+
+    const handleBibleReadingButton = () => {
+        history.push('/bible-reading');
+        handleMenuClose();
     };
 
     const accessToken = useSelector((state) => state.auth);
@@ -115,10 +123,13 @@ const NavBar = () => {
                         <MenuIcon />
                     </IconButton>
                 </Hidden>
-                <Typography className={classes.title}>
-                    <a href="/" className={classes.webName}>
-                        圣经金句网
-                    </a>
+                <Typography
+                    className={classes.title}
+                    onClick={() => {
+                        history.push('/');
+                    }}
+                >
+                    圣经金句网
                 </Typography>
 
                 <Hidden xsDown>
@@ -145,7 +156,7 @@ const NavBar = () => {
                             </ListItemIcon>
                             <ListItemText primary="圣经金句" />
                         </StyledMenuItem>
-                        <StyledMenuItem>
+                        <StyledMenuItem onClick={handleBibleReadingButton}>
                             <ListItemIcon>
                                 <DraftsIcon fontSize="small" />
                             </ListItemIcon>
@@ -165,7 +176,7 @@ const NavBar = () => {
                         </StyledMenuItem>
                     </StyledMenu>
 
-                    {accessToken.token || localStorageToken ? (
+                    {accessToken.token ? (
                         <Button
                             variant="outlined"
                             style={{ color: 'white' }}
@@ -200,9 +211,9 @@ const NavBar = () => {
                             aria-haspopup="true"
                             variant="contained"
                             color="primary"
-                            onClick={() => console.log('Accessed to personal detail page')}
+                            onClick={handleLogoutButton}
                         >
-                            个人信息
+                            退出
                         </Button>
                     ) : null}
 
@@ -243,7 +254,7 @@ const NavBar = () => {
                             </ListItemIcon>
                             <ListItemText primary="圣经金句" />
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleMenuClose}>
+                        <StyledMenuItem onClick={handleBibleReadingButton}>
                             <ListItemIcon>
                                 <DraftsIcon fontSize="small" />
                             </ListItemIcon>
@@ -279,10 +290,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-    },
-    webName: {
-        textDecoration: 'none',
-        color: 'white',
+        cursor: 'pointer',
     },
 }));
 

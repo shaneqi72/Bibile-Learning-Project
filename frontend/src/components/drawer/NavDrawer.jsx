@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
     Drawer,
     List,
@@ -19,28 +19,36 @@ import { toggleNavDrawer } from '../../store/nav/actions';
 const DRAWER_WIDTH = 180;
 
 const NavDrawer = () => {
+    const { id } = useSelector((state) => state.auth);
     const history = useHistory();
+    const location = useLocation();
     const classes = useStyles();
     const localStorageToken = getWithExpiry('token');
     const accessToken = useSelector((state) => state.auth);
     const drawerOpen = useSelector((state) => state.nav.drawerOpen);
     const dispatch = useDispatch();
 
+    const fetchUserDetail = () => {
+        history.push('/personal-detail');
+        dispatch(toggleNavDrawer());
+    };
+
     const loggedInDrawer = [
         {
             text: '个人信息',
             icon: <InboxIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
+            onClick: fetchUserDetail,
+            path: '/personal-detail',
         },
         {
             text: '记忆金句',
             icon: <InboxIcon />,
             onClick: () => {
-                history.push('/learning');
+                (accessToken.token || localStorageToken) && history.push('/learning');
+
                 dispatch(toggleNavDrawer());
             },
+            path: '/learning',
         },
         {
             text: '我的金句',
@@ -48,6 +56,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
         {
             text: '金句管理',
@@ -55,6 +64,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
 
         {
@@ -63,6 +73,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
         {
             text: '常见问题',
@@ -70,6 +81,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
         {
             text: '记忆妙法',
@@ -77,6 +89,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
         {
             text: '告诉朋友',
@@ -84,6 +97,7 @@ const NavDrawer = () => {
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
+            path: '',
         },
     ];
 
@@ -135,9 +149,16 @@ const NavDrawer = () => {
                     {accessToken.token || localStorageToken ? (
                         <List>
                             {loggedInDrawer.map((item, index) => {
-                                const { text, icon, onClick } = item;
+                                const { text, icon, onClick, path } = item;
                                 return (
-                                    <ListItem button key={index} onClick={onClick}>
+                                    <ListItem
+                                        button
+                                        key={index}
+                                        onClick={onClick}
+                                        className={
+                                            location.pathname === path ? classes.active : null
+                                        }
+                                    >
                                         {icon && <ListItemIcon>{icon}</ListItemIcon>}
                                         <ListItemText primary={text} />
                                     </ListItem>
@@ -171,17 +192,31 @@ const NavDrawer = () => {
                     }}
                 >
                     <Toolbar />
-                    <List>
-                        {drawerItems.map((item, index) => {
-                            const { text, icon, onClick } = item;
-                            return (
-                                <ListItem button key={text} onClick={onClick}>
-                                    {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            );
-                        })}
-                    </List>
+                    {accessToken.token || localStorageToken ? (
+                        <List>
+                            {loggedInDrawer.map((item, index) => {
+                                const { text, icon, onClick } = item;
+                                return (
+                                    <ListItem button key={text} onClick={onClick}>
+                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    ) : (
+                        <List>
+                            {drawerItems.map((item, index) => {
+                                const { text, icon, onClick } = item;
+                                return (
+                                    <ListItem button key={text} onClick={onClick}>
+                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    )}
                 </Drawer>
             </Hidden>
         </>
@@ -208,6 +243,9 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+    },
+    active: {
+        background: '#DCDCDC',
     },
 }));
 

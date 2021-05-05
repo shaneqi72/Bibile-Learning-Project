@@ -38,6 +38,7 @@ const LearningMobilePage = () => {
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
                     <Button
+                        onClick={() => history.push('/bible-reading')}
                         variant="contained"
                         color="primary"
                         className={classes.button}

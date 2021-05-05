@@ -7,9 +7,9 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { Formik, Form } from 'formik';
 import FormikField from './FormikField';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserInfo } from '../../store/auth/actions';
-import { setWithExpiry } from './LocalStorage';
+import { setWithExpiry, setUserDetailFromLocalStorage } from './LocalStorage';
 
 const LoginDialog = ({ open, handleClose }) => {
     const initialValues = {
@@ -39,16 +39,15 @@ const LoginDialog = ({ open, handleClose }) => {
                 // },
             )
             .then((res) => {
-                dispatch(setUserInfo(res.data.accessToken));
-                setWithExpiry('token', res.data.accessToken, 90000);
+                dispatch(setUserInfo(res.data.accessToken, res.data.id, res.data.user));
+                setWithExpiry('token', res.data.accessToken, 43200000);
+                setUserDetailFromLocalStorage('accessAuthority', res.data.user, 43200000);
             })
             .catch((err) => console.log(err));
         onSubmitProps.setSubmitting(false);
         handleClose();
     };
 
-    const isLoggedIn = useSelector((state) => state.auth);
-    console.log(isLoggedIn);
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
