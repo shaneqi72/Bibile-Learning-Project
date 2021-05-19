@@ -1,41 +1,60 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const QUESTIONS = [
     {
-        questionText: 'What is the capital of France?',
+        questionText:
+            'LORD my God, I called to you for help, and you healed me. Please select correct book, chapter and verse below.',
         answerOptions: [
-            { answerText: 'New York', isCorrect: false },
-            { answerText: 'London', isCorrect: false },
-            { answerText: 'Paris', isCorrect: true },
-            { answerText: 'Dublin', isCorrect: false },
+            { answerText: 'Matthew 4:20', isCorrect: false },
+            { answerText: 'Mark 5:34', isCorrect: false },
+            { answerText: 'Psalms 30:2', isCorrect: true },
+            { answerText: 'Acts 4:30', isCorrect: false },
         ],
     },
     {
-        questionText: 'Who is CEO of Tesla?',
+        questionText: 'Which is the correct scripture of Philippians 4:6',
         answerOptions: [
-            { answerText: 'Jeff Bezos', isCorrect: false },
-            { answerText: 'Elon Musk', isCorrect: true },
-            { answerText: 'Bill Gates', isCorrect: false },
+            {
+                answerText:
+                    'But blessed is the one who trusts in the LORD, whose confidence is in him.',
+                isCorrect: false,
+            },
+            {
+                answerText:
+                    'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.',
+                isCorrect: true,
+            },
+            {
+                answerText:
+                    'Neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.',
+                isCorrect: false,
+            },
             { answerText: 'Tony Stark', isCorrect: false },
         ],
     },
     {
-        questionText: 'The iPhone was created by which company?',
+        questionText:
+            'Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the LORD your God will be with you wherever you go. Please select correct book, chapter and verse below.',
         answerOptions: [
-            { answerText: 'Apple', isCorrect: true },
-            { answerText: 'Intel', isCorrect: false },
-            { answerText: 'Amazon', isCorrect: false },
-            { answerText: 'Microsoft', isCorrect: false },
+            { answerText: 'Joshua 1:9', isCorrect: true },
+            { answerText: 'Luke 12:22', isCorrect: false },
+            { answerText: 'Hebrews 11:1', isCorrect: false },
+            {
+                answerText: 'Isaiah 41:10Please select correct book, chapter and verse below.',
+                isCorrect: false,
+            },
         ],
     },
     {
-        questionText: 'How many Harry Potter books are there?',
+        questionText:
+            'I wait for the LORD, my whole being waits, and in his word I put my hope. lease select correct book, chapter and verse below.',
         answerOptions: [
-            { answerText: '1', isCorrect: false },
-            { answerText: '4', isCorrect: false },
-            { answerText: '6', isCorrect: false },
-            { answerText: '7', isCorrect: true },
+            { answerText: 'Romans 5:5', isCorrect: false },
+            { answerText: 'Philippians 3:12', isCorrect: false },
+            { answerText: 'Mark 4:30', isCorrect: false },
+            { answerText: 'Psalm 130:5', isCorrect: true },
         ],
     },
 ];
@@ -46,6 +65,8 @@ const QuizPage = () => {
     const [score, setScore] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [shuffledQuestions, setShuffledQuestions] = useState(QUESTIONS);
+
+    let history = useHistory();
 
     // const shuffledQuestions = [...QUESTIONS].sort(() => Math.random() - 0.5);
     const shuffleQuestions = () => {
@@ -85,6 +106,9 @@ const QuizPage = () => {
     const handleRestartButton = () => {
         setCurrentQuestion(0);
     };
+    const handleExitButton = () => {
+        history.push('/learning');
+    };
 
     return (
         <div className={classes.quizContainer}>
@@ -96,6 +120,9 @@ const QuizPage = () => {
                     <div>
                         <button onClick={handleRestartButton} className={classes.indicateButton}>
                             Restart
+                        </button>
+                        <button onClick={handleExitButton} className={classes.indicateButton}>
+                            Exit
                         </button>
                     </div>
                 </>
