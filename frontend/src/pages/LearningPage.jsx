@@ -39,7 +39,8 @@ const LearningPage = () => {
     return (
         <>
             <Hidden xsDown>
-                <Box className={classes.box}>
+                <LearningMobilePage />
+                {/* <Box className={classes.box}>
                     <h2 style={{ textAlign: 'center' }}>学 习 复 习 圣 经 金 句</h2>
                     <table className={classes.table}>
                         <thead>
@@ -135,7 +136,7 @@ const LearningPage = () => {
                             </tr>
                         </tbody>
                     </table>
-                </Box>
+                </Box> */}
             </Hidden>
 
             <Hidden smUp>

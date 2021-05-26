@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 const LearningMobilePage = () => {
     const history = useHistory();
 
-    const handleClick = () => {
+    const handleBibleQuiz = () => {
         history.push('/learning/test');
     };
 
@@ -23,7 +23,7 @@ const LearningMobilePage = () => {
         <div className={classes.root}>
             <Grid container>
                 <Grid item xs={12} className={classes.gird}>
-                    <h3>学习复习金句</h3>
+                    <h3>Bible Learning</h3>
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
                     <Button
@@ -31,9 +31,9 @@ const LearningMobilePage = () => {
                         color="primary"
                         className={classes.button}
                         startIcon={<TimerIcon />}
-                        onClick={handleClick}
+                        onClick={handleBibleQuiz}
                     >
-                        今句测试
+                        Quiz
                     </Button>
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
@@ -44,7 +44,7 @@ const LearningMobilePage = () => {
                         className={classes.button}
                         startIcon={<MenuBookIcon />}
                     >
-                        阅读圣经
+                        Read Bible
                     </Button>
                 </Grid>
 
@@ -55,7 +55,7 @@ const LearningMobilePage = () => {
                         className={classes.button}
                         startIcon={<BookmarksIcon />}
                     >
-                        我的金句
+                        My Verses
                     </Button>
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
@@ -65,7 +65,7 @@ const LearningMobilePage = () => {
                         className={classes.button}
                         startIcon={<UpdateIcon />}
                     >
-                        学习纪录
+                        Learning History
                     </Button>
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
@@ -75,7 +75,7 @@ const LearningMobilePage = () => {
                         className={classes.button}
                         startIcon={<SubjectIcon />}
                     >
-                        成绩纪录
+                        Scores
                     </Button>
                 </Grid>
                 <Grid item xs={6} className={classes.gird}>
@@ -86,7 +86,7 @@ const LearningMobilePage = () => {
                         startIcon={<ExitToAppIcon />}
                         onClick={() => history.push('/')}
                     >
-                        退出
+                        Exit
                     </Button>
                 </Grid>
             </Grid>

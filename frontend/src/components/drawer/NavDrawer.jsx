@@ -40,7 +40,7 @@ const NavDrawer = () => {
             path: '/personal-detail',
         },
         {
-            text: '记忆金句',
+            text: 'Bible Learning',
             icon: <InboxIcon />,
             onClick: () => {
                 (accessToken.token || localStorageToken) && history.push('/learning');
@@ -49,7 +49,7 @@ const NavDrawer = () => {
             path: '/learning',
         },
         {
-            text: '金句游戏',
+            text: 'Quiz',
             icon: <InboxIcon />,
             onClick: () => {
                 (accessToken.token || localStorageToken) && history.push('/learning/test');
@@ -57,26 +57,8 @@ const NavDrawer = () => {
             },
             path: '/learning/test',
         },
-
         {
-            text: '使用说明',
-            icon: <MailIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-            path: '',
-        },
-        {
-            text: '常见问题',
-            icon: <MailIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-            path: '',
-        },
-
-        {
-            text: '告诉朋友',
+            text: 'Share to friends',
             icon: <MailIcon />,
             onClick: () => {
                 dispatch(toggleNavDrawer());

@@ -59,7 +59,7 @@ const RegisterDialog = ({ open, handleClose }) => {
             onClose={handleClose}
             aria-labelledby="form-dialog-title"
         >
-            <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
+            <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
             <DialogContent>
                 <Formik
                     initialValues={initialValues}

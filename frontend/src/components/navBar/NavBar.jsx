@@ -94,14 +94,25 @@ const NavBar = () => {
     const handleSignUpClose = () => {
         setOpenSignUp(false);
     };
+
+    const signUpHandler = () => {
+        setOpenSignUp(!openSignUp);
+        handleMenuClose();
+    };
+
     const handleLogoutButton = () => {
         dispatch(setUserInfo(null));
         localStorage.removeItem('token');
         history.push('/');
     };
 
-    const handleBibleReadingButton = () => {
+    const handleBibleSearchButton = () => {
         history.push('/bible-reading');
+        handleMenuClose();
+    };
+
+    const handleBibleTest = () => {
+        history.push('/learning/test');
         handleMenuClose();
     };
 
@@ -133,15 +144,19 @@ const NavBar = () => {
                 </Typography>
 
                 <Hidden xsDown>
-                    <Button
-                        aria-controls="customized-menu"
-                        aria-haspopup="true"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleMenuClick}
-                    >
-                        More Info
-                    </Button>
+                    {accessToken.token || localStorageToken ? (
+                        <Button
+                            aria-controls="customized-menu"
+                            aria-haspopup="true"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleMenuClick}
+                        >
+                            More Info
+                        </Button>
+                    ) : (
+                        ''
+                    )}
 
                     <StyledMenu
                         id="customized-menu"
@@ -156,23 +171,17 @@ const NavBar = () => {
                             </ListItemIcon>
                             <ListItemText primary="Gold Verses" />
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleBibleReadingButton}>
+                        <StyledMenuItem onClick={handleBibleSearchButton}>
                             <ListItemIcon>
                                 <DraftsIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="Reading Bible" />
+                            <ListItemText primary="Bible search" />
                         </StyledMenuItem>
                         <StyledMenuItem>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="Search Scriptures" />
-                        </StyledMenuItem>
-                        <StyledMenuItem>
-                            <ListItemIcon>
-                                <InboxIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="Quiz" />
+                            <ListItemText primary="Quiz" onClick={handleBibleTest} />
                         </StyledMenuItem>
                     </StyledMenu>
 
@@ -185,13 +194,23 @@ const NavBar = () => {
                             Logout
                         </Button>
                     ) : (
-                        <Button
-                            variant="outlined"
-                            style={{ color: 'white' }}
-                            onClick={handleSignInOpen}
-                        >
-                            Login
-                        </Button>
+                        <>
+                            <Button
+                                variant="outlined"
+                                style={{ color: 'white' }}
+                                onClick={handleSignInOpen}
+                            >
+                                Sign in
+                            </Button>
+
+                            <Button
+                                variant="outlined"
+                                style={{ color: 'white' }}
+                                onClick={signUpHandler}
+                            >
+                                Become a member
+                            </Button>
+                        </>
                     )}
                 </Hidden>
 
@@ -254,23 +273,18 @@ const NavBar = () => {
                             </ListItemIcon>
                             <ListItemText primary="Gold verses" />
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleBibleReadingButton}>
+
+                        <StyledMenuItem onClick={handleBibleSearchButton}>
                             <ListItemIcon>
-                                <DraftsIcon fontSize="small" />
+                                <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="Read bible" />
+                            <ListItemText primary="Bible search" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleMenuClose}>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="Search scriptures" />
-                        </StyledMenuItem>
-                        <StyledMenuItem onClick={handleMenuClose}>
-                            <ListItemIcon>
-                                <InboxIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="Quiz" />
+                            <ListItemText primary="Quiz" onClick={handleBibleTest} />
                         </StyledMenuItem>
                     </StyledMenu>
                 </Hidden>
