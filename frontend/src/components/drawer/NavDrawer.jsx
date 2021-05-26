@@ -19,7 +19,6 @@ import { toggleNavDrawer } from '../../store/nav/actions';
 const DRAWER_WIDTH = 180;
 
 const NavDrawer = () => {
-    const { id } = useSelector((state) => state.auth);
     const history = useHistory();
     const location = useLocation();
     const classes = useStyles();
@@ -35,7 +34,7 @@ const NavDrawer = () => {
 
     const loggedInDrawer = [
         {
-            text: '个人信息',
+            text: 'User Details',
             icon: <InboxIcon />,
             onClick: fetchUserDetail,
             path: '/personal-detail',
@@ -45,26 +44,18 @@ const NavDrawer = () => {
             icon: <InboxIcon />,
             onClick: () => {
                 (accessToken.token || localStorageToken) && history.push('/learning');
-
                 dispatch(toggleNavDrawer());
             },
             path: '/learning',
         },
         {
-            text: '我的金句',
+            text: '金句游戏',
             icon: <InboxIcon />,
             onClick: () => {
+                (accessToken.token || localStorageToken) && history.push('/learning/test');
                 dispatch(toggleNavDrawer());
             },
-            path: '',
-        },
-        {
-            text: '金句管理',
-            icon: <InboxIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-            path: '',
+            path: '/learning/test',
         },
 
         {
@@ -83,14 +74,7 @@ const NavDrawer = () => {
             },
             path: '',
         },
-        {
-            text: '记忆妙法',
-            icon: <MailIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-            path: '',
-        },
+
         {
             text: '告诉朋友',
             icon: <MailIcon />,
@@ -103,28 +87,14 @@ const NavDrawer = () => {
 
     const drawerItems = [
         {
-            text: '使用说明',
+            text: 'About us',
             icon: <MailIcon />,
             onClick: () => {
                 dispatch(toggleNavDrawer());
             },
         },
         {
-            text: '常见问题',
-            icon: <MailIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-        },
-        {
-            text: '记忆妙法',
-            icon: <MailIcon />,
-            onClick: () => {
-                dispatch(toggleNavDrawer());
-            },
-        },
-        {
-            text: '告诉朋友',
+            text: 'Share to friends',
             icon: <MailIcon />,
             onClick: () => {
                 dispatch(toggleNavDrawer());

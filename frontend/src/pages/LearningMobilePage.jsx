@@ -84,6 +84,7 @@ const LearningMobilePage = () => {
                         color="primary"
                         className={classes.button}
                         startIcon={<ExitToAppIcon />}
+                        onClick={() => history.push('/')}
                     >
                         退出
                     </Button>

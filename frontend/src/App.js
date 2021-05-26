@@ -22,7 +22,7 @@ function App() {
     const classes = useStyles();
     const accessToken = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const localStorageToken = getWithExpiry('token');

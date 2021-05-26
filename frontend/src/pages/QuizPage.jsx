@@ -105,6 +105,8 @@ const QuizPage = () => {
 
     const handleRestartButton = () => {
         setCurrentQuestion(0);
+        shuffleQuestions();
+        setShowScore(false);
     };
     const handleExitButton = () => {
         history.push('/learning');
