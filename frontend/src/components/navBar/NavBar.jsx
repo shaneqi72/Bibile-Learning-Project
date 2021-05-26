@@ -129,7 +129,7 @@ const NavBar = () => {
                         history.push('/');
                     }}
                 >
-                    圣经金句网
+                    BIBLE LEARNING
                 </Typography>
 
                 <Hidden xsDown>
@@ -140,7 +140,7 @@ const NavBar = () => {
                         color="primary"
                         onClick={handleMenuClick}
                     >
-                        圣经研习
+                        More Info
                     </Button>
 
                     <StyledMenu
@@ -154,25 +154,25 @@ const NavBar = () => {
                             <ListItemIcon>
                                 <SendIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="圣经金句" />
+                            <ListItemText primary="Gold Verses" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleBibleReadingButton}>
                             <ListItemIcon>
                                 <DraftsIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="阅读圣经" />
+                            <ListItemText primary="Reading Bible" />
                         </StyledMenuItem>
                         <StyledMenuItem>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="搜索圣经" />
+                            <ListItemText primary="Search Scriptures" />
                         </StyledMenuItem>
                         <StyledMenuItem>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="金句测试" />
+                            <ListItemText primary="Quiz" />
                         </StyledMenuItem>
                     </StyledMenu>
 
@@ -203,7 +203,7 @@ const NavBar = () => {
                         color="primary"
                         onClick={handleMenuClick}
                     >
-                        更多内容
+                        More Info
                     </Button>
                     {accessToken.token || localStorageToken ? (
                         <Button
@@ -213,7 +213,7 @@ const NavBar = () => {
                             color="primary"
                             onClick={handleLogoutButton}
                         >
-                            退出
+                            Log out
                         </Button>
                     ) : null}
 
@@ -229,14 +229,14 @@ const NavBar = () => {
                                 <ListItemIcon>
                                     <VpnKeyIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText primary="用户退出" />
+                                <ListItemText primary="Log out" />
                             </StyledMenuItem>
                         ) : (
                             <StyledMenuItem onClick={handleSignInOpen}>
                                 <ListItemIcon>
                                     <VpnKeyIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText primary="用户登录" />
+                                <ListItemText primary="Log in" />
                             </StyledMenuItem>
                         )}
                         {accessToken.token || localStorageToken ? null : (
@@ -244,7 +244,7 @@ const NavBar = () => {
                                 <ListItemIcon>
                                     <VpnKeyIcon fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText primary="用户注册" />
+                                <ListItemText primary="Sign up" />
                             </StyledMenuItem>
                         )}
 
@@ -252,25 +252,25 @@ const NavBar = () => {
                             <ListItemIcon>
                                 <SendIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="圣经金句" />
+                            <ListItemText primary="Gold verses" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleBibleReadingButton}>
                             <ListItemIcon>
                                 <DraftsIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="阅读圣经" />
+                            <ListItemText primary="Read bible" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleMenuClose}>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="搜索圣经" />
+                            <ListItemText primary="Search scriptures" />
                         </StyledMenuItem>
                         <StyledMenuItem onClick={handleMenuClose}>
                             <ListItemIcon>
                                 <InboxIcon fontSize="small" />
                             </ListItemIcon>
-                            <ListItemText primary="金句测试" />
+                            <ListItemText primary="Quiz" />
                         </StyledMenuItem>
                     </StyledMenu>
                 </Hidden>
